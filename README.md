@@ -1,5 +1,7 @@
-# splitter package
+# Atom Panels
 
-A short description of your package.
+I wasn't happy with the way Atom was handling split views, especially in Vim Mode, so I made my own. It's essentially just a few keyboard shortcuts to navigate between split panes and create new ones in each direction.
 
-![A screenshot of your package](https://f.cloud.github.com/assets/69169/2290250/c35d867a-a017-11e3-86be-cd7c5bf3ff9b.gif)
+This package may actually be doable using default Atom functionality, but I wasn't aware of it at the time and I wanted an excuse to learn coffeescript :)
+
+![atom panels](https://dl.dropboxusercontent.com/u/51560120/atom-origami.gif)
