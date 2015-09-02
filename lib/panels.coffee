@@ -4,14 +4,14 @@ module.exports = Splitter =
   # Register commands
   # TODO refactor this to be nicer maybe?
   activate: (state) ->
-    atom.commands.add "atom-workspace", "splitter:move-right": => @moveRight()
-    atom.commands.add "atom-workspace", "splitter:move-left", => @moveLeft()
-    atom.commands.add "atom-workspace", "splitter:move-down", => @moveDown()
-    atom.commands.add "atom-workspace", "splitter:move-up", => @moveUp()
-    atom.commands.add "atom-workspace", "splitter:split-right", => @splitRight()
-    atom.commands.add "atom-workspace", "splitter:split-left", => @splitLeft()
-    atom.commands.add "atom-workspace", "splitter:split-down", => @splitDown()
-    atom.commands.add "atom-workspace", "splitter:split-up", => @splitUp()
+    atom.commands.add "atom-workspace", "atom-panels:move-right": => @moveRight()
+    atom.commands.add "atom-workspace", "atom-panels:move-left", => @moveLeft()
+    atom.commands.add "atom-workspace", "atom-panels:move-down", => @moveDown()
+    atom.commands.add "atom-workspace", "atom-panels:move-up", => @moveUp()
+    atom.commands.add "atom-workspace", "atom-panels:split-right", => @splitRight()
+    atom.commands.add "atom-workspace", "atom-panels:split-left", => @splitLeft()
+    atom.commands.add "atom-workspace", "atom-panels:split-down", => @splitDown()
+    atom.commands.add "atom-workspace", "atom-panels:split-up", => @splitUp()
 
   # TODO refactor this to be nicer
   moveRight: -> @move 'horizontal', +1
@@ -42,7 +42,6 @@ module.exports = Splitter =
       buffer = pane.getActiveItem().buffer
       buffer.load()
       keys = {copyActiveItem: true}
-
       switch [direction, distance].join(' ')
         when 'horizontal 1'
           blankPane = pane.splitRight(keys)
@@ -88,13 +87,12 @@ module.exports = Splitter =
   deactivate: ->
     @modalPanel.destroy()
     @subscriptions.dispose()
-    @splitterView.destroy()
+    @panelsView.destroy()
 
   serialize: ->
-    splitterViewState: @splitterView.serialize()
+    panelsViewState: @panelsView.serialize()
 
   toggle: ->
-    console.log 'Splitter was toggled!'
     if @modalPanel.isVisible()
       @modalPanel.hide()
     else
