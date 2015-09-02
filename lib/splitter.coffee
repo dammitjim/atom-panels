@@ -1,19 +1,34 @@
 {CompositeDisposable} = require 'atom'
 module.exports = Splitter =
 
+  # Register commands
+  # TODO refactor this to be nicer maybe?
   activate: (state) ->
     atom.commands.add "atom-workspace", "splitter:move-right": => @moveRight()
     atom.commands.add "atom-workspace", "splitter:move-left", => @moveLeft()
     atom.commands.add "atom-workspace", "splitter:move-down", => @moveDown()
     atom.commands.add "atom-workspace", "splitter:move-up", => @moveUp()
-  #end
+    atom.commands.add "atom-workspace", "splitter:split-right", => @splitRight()
+    atom.commands.add "atom-workspace", "splitter:split-left", => @splitLeft()
+    atom.commands.add "atom-workspace", "splitter:split-down", => @splitDown()
+    atom.commands.add "atom-workspace", "splitter:split-up", => @splitUp()
 
+  # TODO refactor this to be nicer
   moveRight: -> @move 'horizontal', +1
   moveLeft: -> @move 'horizontal', -1
   moveUp: -> @move 'vertical', -1
   moveDown: -> @move 'vertical', +1
 
-  move: (direction, distance) ->
+  splitRight: -> @move 'horizontal', +1, true
+  splitLeft: -> @move 'horizontal', -1, true
+  splitUp: -> @move 'vertical', -1, true
+  splitDown: -> @move 'vertical', +1, true
+
+  # Moves to the associated pane
+  # @param direction - horizontal or vertical
+  # @param distance  - +1 for increase distance, -1 for decrease
+  # @param split     - should we be splitting if there is no pane present
+  move: (direction, distance, split) ->
     swapped = false
     pane = atom.workspace.getActivePane()
     if atom.workspace.getPanes().length > 1
@@ -21,11 +36,13 @@ module.exports = Splitter =
       if target?
         @swapEditor pane, target
         swapped = true
-    #endif
-    if !swapped
+
+    # If we haven't already swapped and we want to split
+    if !swapped && split
       buffer = pane.getActiveItem().buffer
       buffer.load()
       keys = {copyActiveItem: true}
+
       switch [direction, distance].join(' ')
         when 'horizontal 1'
           blankPane = pane.splitRight(keys)
@@ -39,17 +56,14 @@ module.exports = Splitter =
         when 'vertical -1'
           blankPane = pane.splitUp(keys)
           break
-  #end
 
   getTarget: (pane, direction, distance) ->
     [axis, child] = @getAxis(pane, direction)
     if axis?
       return @getRelativePane axis, child, distance
-  #end
 
   swapEditor: (source, target) ->
     target.activate()
-  #end
 
   getAxis: (pane, direction) ->
     axis = pane.parent
@@ -61,7 +75,6 @@ module.exports = Splitter =
       axis = axis.parent
       break
     return [axis,child]
-  #end
 
   getRelativePane: (axis, source, delta) ->
     if axis.children?
@@ -71,17 +84,14 @@ module.exports = Splitter =
       if axis.children[target]?
         return axis.children[target].getPanes()[0]
     return null
-  #end
 
   deactivate: ->
     @modalPanel.destroy()
     @subscriptions.dispose()
     @splitterView.destroy()
-  #end
 
   serialize: ->
     splitterViewState: @splitterView.serialize()
-  #end
 
   toggle: ->
     console.log 'Splitter was toggled!'
@@ -89,4 +99,3 @@ module.exports = Splitter =
       @modalPanel.hide()
     else
       @modalPanel.show()
-  #end
