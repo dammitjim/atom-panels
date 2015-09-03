@@ -9,7 +9,11 @@
       "atom-panels:move-right",
       "atom-panels:move-left",
       "atom-panels:move-up",
-      "atom-panels:move-down"
+      "atom-panels:move-down",
+      "atom-panels:split-right",
+      "atom-panels:split-left",
+      "atom-panels:split-up",
+      "atom-panels:split-down"
     ]
   },
   "repository": "https://github.com/jimah/atom-panels",
