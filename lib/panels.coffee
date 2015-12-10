@@ -1,17 +1,28 @@
 {CompositeDisposable} = require 'atom'
 module.exports = Splitter =
 
+  # TODO opening new split when you haven't saved your work deletes it
+  # TODO some tests would be nice
+
   # Register commands
   # TODO refactor this to be nicer maybe?
   activate: (state) ->
-    atom.commands.add "atom-workspace", "atom-panels:move-right": => @moveRight()
-    atom.commands.add "atom-workspace", "atom-panels:move-left", => @moveLeft()
-    atom.commands.add "atom-workspace", "atom-panels:move-down", => @moveDown()
-    atom.commands.add "atom-workspace", "atom-panels:move-up", => @moveUp()
-    atom.commands.add "atom-workspace", "atom-panels:split-right", => @splitRight()
-    atom.commands.add "atom-workspace", "atom-panels:split-left", => @splitLeft()
-    atom.commands.add "atom-workspace", "atom-panels:split-down", => @splitDown()
-    atom.commands.add "atom-workspace", "atom-panels:split-up", => @splitUp()
+    atom.commands.add "atom-workspace",
+      "atom-panels:move-right": => @moveRight()
+    atom.commands.add "atom-workspace",
+      "atom-panels:move-left", => @moveLeft()
+    atom.commands.add "atom-workspace",
+      "atom-panels:move-down", => @moveDown()
+    atom.commands.add "atom-workspace",
+      "atom-panels:move-up", => @moveUp()
+    atom.commands.add "atom-workspace",
+      "atom-panels:split-right", => @splitRight()
+    atom.commands.add "atom-workspace",
+      "atom-panels:split-left", => @splitLeft()
+    atom.commands.add "atom-workspace",
+      "atom-panels:split-down", => @splitDown()
+    atom.commands.add "atom-workspace",
+      "atom-panels:split-up", => @splitUp()
 
   # TODO refactor this to be nicer
   moveRight: -> @move 'horizontal', +1
@@ -23,6 +34,7 @@ module.exports = Splitter =
   splitLeft: -> @move 'horizontal', -1, true
   splitUp: -> @move 'vertical', -1, true
   splitDown: -> @move 'vertical', +1, true
+
 
   # Moves to the associated pane
   # @param direction - horizontal or vertical
@@ -56,13 +68,16 @@ module.exports = Splitter =
           blankPane = pane.splitUp(keys)
           break
 
+
   getTarget: (pane, direction, distance) ->
     [axis, child] = @getAxis(pane, direction)
     if axis?
       return @getRelativePane axis, child, distance
 
+
   swapEditor: (source, target) ->
     target.activate()
+
 
   getAxis: (pane, direction) ->
     axis = pane.parent
@@ -75,6 +90,7 @@ module.exports = Splitter =
       break
     return [axis,child]
 
+
   getRelativePane: (axis, source, delta) ->
     if axis.children?
       position = axis.children.indexOf source
@@ -84,13 +100,16 @@ module.exports = Splitter =
         return axis.children[target].getPanes()[0]
     return null
 
+
   deactivate: ->
     @modalPanel.destroy()
     @subscriptions.dispose()
     @panelsView.destroy()
 
+
   serialize: ->
     panelsViewState: @panelsView.serialize()
+
 
   toggle: ->
     if @modalPanel.isVisible()
