@@ -5,14 +5,6 @@
   "description": "A short description of your package",
   "keywords": [
   ],
-  "activationCommands": {
-    "atom-workspace": [
-      "atom-panels:move-right",
-      "atom-panels:move-left",
-      "atom-panels:move-up",
-      "atom-panels:move-down"
-    ]
-  },
   "repository": "https://github.com/jimah/atom-panels",
   "license": "MIT",
   "engines": {

@@ -83,17 +83,3 @@ module.exports = Splitter =
       if axis.children[target]?
         return axis.children[target].getPanes()[0]
     return null
-
-  deactivate: ->
-    @modalPanel.destroy()
-    @subscriptions.dispose()
-    @panelsView.destroy()
-
-  serialize: ->
-    panelsViewState: @panelsView.serialize()
-
-  toggle: ->
-    if @modalPanel.isVisible()
-      @modalPanel.hide()
-    else
-      @modalPanel.show()
