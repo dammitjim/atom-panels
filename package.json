@@ -1,7 +1,7 @@
 {
   "name": "atom-panels",
   "main": "./lib/panels",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Enhanced panel splitting.",
   "keywords": [],
   "repository": "https://github.com/jimah/atom-panels",
