@@ -1,0 +1,9 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "no-unused-vars": ["off"]
+  },
+  "globals": {
+    "atom": true
+  }
+}
